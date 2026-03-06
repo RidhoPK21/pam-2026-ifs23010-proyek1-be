@@ -1,5 +1,5 @@
 package org.delcom
-//#Ridho PK
+
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
@@ -10,13 +10,14 @@ import org.delcom.data.AppException
 import org.delcom.data.ErrorResponse
 import org.delcom.helpers.JWTConstants
 import org.delcom.helpers.parseMessageToMap
-import org.delcom.services.EventService
+import org.delcom.services.EventService // Import Service baru
 import org.delcom.services.AuthService
 import org.delcom.services.UserService
 import org.koin.ktor.ext.inject
 
 fun Application.configureRouting() {
-    val todoService: EventService by inject()
+    // Ubah nama variabel dari todoService menjadi eventService
+    val eventService: EventService by inject()
     val authService: AuthService by inject()
     val userService: UserService by inject()
 
@@ -87,28 +88,28 @@ fun Application.configureRouting() {
                 }
             }
 
-            // Route Todos
-            route("/todos") {
+            // Route Events (Ubah dari /todos menjadi /events)
+            route("/events") {
                 get("/stats") {
-                    todoService.getStats(call)
+                    eventService.getStats(call)
                 }
                 get {
-                    todoService.getAll(call)
+                    eventService.getAll(call)
                 }
                 post {
-                    todoService.post(call)
+                    eventService.post(call)
                 }
                 get("/{id}") {
-                    todoService.getById(call)
+                    eventService.getById(call)
                 }
                 put("/{id}") {
-                    todoService.put(call)
+                    eventService.put(call)
                 }
                 put("/{id}/cover") {
-                    todoService.putCover(call)
+                    eventService.putCover(call)
                 }
                 delete("/{id}") {
-                    todoService.delete(call)
+                    eventService.delete(call)
                 }
             }
         }
@@ -118,8 +119,9 @@ fun Application.configureRouting() {
                 userService.getPhoto(call)
             }
 
-            get("todos/{id}") {
-                todoService.getCover(call)
+            // Ubah dari todos/{id} menjadi events/{id}
+            get("events/{id}") {
+                eventService.getCover(call)
             }
         }
 
