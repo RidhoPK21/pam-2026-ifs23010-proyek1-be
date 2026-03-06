@@ -2,7 +2,7 @@ package org.delcom.module
 
 import org.delcom.repositories.*
 import org.delcom.services.AuthService
-import org.delcom.services.TodoService
+import org.delcom.services.EventService // Ubah import TodoService menjadi EventService
 import org.delcom.services.UserService
 import org.koin.dsl.module
 
@@ -14,7 +14,7 @@ fun appModule(jwtSecret: String) = module {
 
     // User Service
     single {
-        UserService(get(),get())
+        UserService(get(), get())
     }
 
     // Refresh Token Repository
@@ -24,16 +24,16 @@ fun appModule(jwtSecret: String) = module {
 
     // Auth Service
     single {
-        AuthService(jwtSecret,get(), get())
+        AuthService(jwtSecret, get(), get())
     }
 
-    // Plant Repository
-    single<ITodoRepository> {
-        TodoRepository()
+    // Event Repository
+    single<IEventRepository> {
+        EventRepository()
     }
 
-    // Plant Service
+    // Event Service
     single {
-        TodoService(get(),get())
+        EventService(get(), get())
     }
 }

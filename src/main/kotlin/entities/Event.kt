@@ -7,14 +7,19 @@ import kotlinx.serialization.Serializable
 import java.util.UUID
 
 @Serializable
-data class Todo(
-    var id : String = UUID.randomUUID().toString(),
-    var userId : String,
+data class Event(
+    var id: String = UUID.randomUUID().toString(),
+    var userId: String,
     var title: String,
     var description: String,
-    var isDone: Boolean = false,
     var cover: String?,
-    var urgency: Int = 1,
+
+    // Field baru pengganti isDone dan urgency
+    var status: String = "belum terlaksana",
+    var tanggalPelaksanaan: String,
+    var tempatPelaksanaan: String,
+    var estimasiBiaya: String,
+    var divisi: String,
 
     @Contextual
     val createdAt: Instant = Clock.System.now(),

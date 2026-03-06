@@ -1,6 +1,5 @@
 ## Global Variabel
-#@BaseUrl = https://pam-2026-p5-ifs18005-be.delcom.org:8080
-@BaseUrl = https://pam-2026-p5-ifs23010-be.ifs23010.fun:8080/
+@BaseUrl = https://pam-2026-ifs23010-proyek1-be.ifs23010.fun:8080/
 
 ### ---------------------------------------
 ## Auth
@@ -41,7 +40,7 @@ Content-Type: application/json
   "authToken": "{{authToken}}"
 }
 
-### Masuk ke layanan
+### Refresh Token layanan
 # @name PostRefreshToken
 POST {{BaseUrl}}/auth/refresh-token
 Content-Type: application/json
@@ -105,7 +104,7 @@ Content-Type: image/png
 < ./uploads/examples/me.png
 --WebAppBoundary--
 
-### Mengambil data tumbuhan berdasarkan id-nya
+### Mengambil foto pengguna berdasarkan id-nya
 @userId = 00ed9d33-61b0-48b7-a32a-6510af028731
 
 # @name GetMyPhoto
@@ -114,51 +113,66 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 ### ---------------------------------------
-## Todos
+## Events (Kegiatan Himpunan)
 ### ---------------------------------------
 
-### Mengambil semua data todo user saat ini
-# @name GetTodos
-GET {{BaseUrl}}/todos?search=
+### Mengambil semua data kegiatan user saat ini (dengan filter opsional)
+# @name GetEvents
+GET {{BaseUrl}}/events?search=&status=belum terlaksana&divisi=Humas
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
-### Menambahkan todo
-# @name PostTodos
-POST {{BaseUrl}}/todos
+### Mengambil statistik kegiatan di Home
+# @name GetEventStats
+GET {{BaseUrl}}/events/stats
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+### Menambahkan kegiatan
+# @name PostEvents
+POST {{BaseUrl}}/events
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "title": "Judul Todo",
-  "description": "Deskripsi Todo"
+  "title": "Rapat Akbar Himakom",
+  "description": "Membahas program kerja satu tahun ke depan",
+  "status": "belum terlaksana",
+  "tanggalPelaksanaan": "2026-04-15",
+  "tempatPelaksanaan": "Auditorium Kampus",
+  "estimasiBiaya": "500000",
+  "divisi": "Humas"
 }
 
 > {%
-    client.global.set("todoId", response.body.data.todoId);
+    client.global.set("eventId", response.body.data.eventId);
 %}
 
-### Mengambil todo dengan id
-# @name GetTodoById
-GET {{BaseUrl}}/todos/{{todoId}}
+### Mengambil kegiatan dengan id
+# @name GetEventById
+GET {{BaseUrl}}/events/{{eventId}}
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
-### Mengubah todo
-# @name PutTodo
-PUT {{BaseUrl}}/todos/{{todoId}}
+### Mengubah kegiatan
+# @name PutEvent
+PUT {{BaseUrl}}/events/{{eventId}}
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-  "title": "Judul Todo",
-  "description": "Deskripsi Todo",
-  "isDone": true
+  "title": "Rapat Akbar Himakom (Revisi)",
+  "description": "Membahas program kerja dan dies natalis",
+  "status": "sudah terlaksana",
+  "tanggalPelaksanaan": "2026-04-15",
+  "tempatPelaksanaan": "Auditorium Utama Kampus",
+  "estimasiBiaya": "750000",
+  "divisi": "Humas"
 }
 
-### Mengubah cover todo
-# @name PutTodoCover
-PUT {{BaseUrl}}/todos/{{todoId}}/cover
+### Mengubah cover kegiatan
+# @name PutEventCover
+PUT {{BaseUrl}}/events/{{eventId}}/cover
 Authorization: Bearer {{authToken}}
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
@@ -169,14 +183,14 @@ Content-Type: image/png
 < ./uploads/examples/me.png
 --WebAppBoundary--
 
-### Mengambil cover todo
-# @name GetTodoCover
-GET {{BaseUrl}}/images/todos/{{todoId}}
+### Mengambil cover kegiatan
+# @name GetEventCover
+GET {{BaseUrl}}/images/events/{{eventId}}
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
-### Menghapus todo
-# @name DeleteTodo
-DELETE {{BaseUrl}}/todos/{{todoId}}
+### Menghapus kegiatan
+# @name DeleteEvent
+DELETE {{BaseUrl}}/events/{{eventId}}
 Authorization: Bearer {{authToken}}
 Content-Type: application/json
